@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">
+        <style>
+          table {
+            /* margin:            5vw; */
+            margin-left:      20px;
+            margin-right:     20px;
+            caption-side:     bottom;
+            border-collapse:  collapse;
+            font-size:          1em;
+            background-color:   #fafcff;
+            border:             1px solid #909090;
+            color:              #2a2a2a;
+            padding:            5px 5px 2px;
+            border-collapse:    collapse;
+          }
+          td, th {
+            padding:          5px;
+            text-align:       left;
+            border:             thin dotted gray;
+          }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            {% block body %}
+            {% endblock %}
+        </div>
+    </body>
+</html>
