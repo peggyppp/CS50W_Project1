@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 # Check for environment variable
 # if not os.getenv("DATABASE_URL"):
-if not "postgresql://localhost/PeggyPan":
+if not "postgres://ftpwcaptkxiaff:35effe8ca57feda3424178663eecc3756b0b6ab6e7aa028f5dc55c950634a89d@ec2-174-129-32-240.compute-1.amazonaws.com:5432/dattefn9vikgur":
     raise RuntimeError("DATABASE_URL is not set")
 
 # Configure session to use filesystem
@@ -21,29 +21,44 @@ Session(app)
 
 # Set up database
 # engine = create_engine(os.getenv("DATABASE_URL"))
-engine = create_engine("postgresql://localhost/PeggyPan")
+engine = create_engine("postgres://ftpwcaptkxiaff:35effe8ca57feda3424178663eecc3756b0b6ab6e7aa028f5dc55c950634a89d@ec2-174-129-32-240.compute-1.amazonaws.com:5432/dattefn9vikgur")
 db = scoped_session(sessionmaker(bind=engine))
 
 
 @app.route("/")
 def index():
+    # try:
+    #     if session['username']:
+    #         return render_template("search.html")
+    # except:
     return render_template("index.html")
 
-@app.route("/signup", methods=["POST"])
+@app.route("/signuppage")
 def signup():
+    return render_template("signuppage.html")
+
+@app.route("/signuppage", methods=["POST"])
+def signupsubmit():
     """Sign up a new account."""
 
     username = request.form.get("username")
     password = request.form.get("password")
 
+    username.strip()
+    password.strip()
+
+    # Make sure no blank in username and password
+    if len(username) == 0 or len(password) == 0 or ' ' in username or ' ' in password:
+        return render_template("signuppage.html", signup_message="Error: Invalid username or password . Please try another one.")
+
     # Make sure username is unique.
     if db.execute("SELECT * FROM users WHERE username = :username", {"username": username}).rowcount != 0:
-        return render_template("index.html", signup_message="This username already exists. Please try another one.")
+        return render_template("signuppage.html", signup_message="Error: This username already exists. Please try another one.")
 
     db.execute("INSERT INTO users (username, password) VALUES (:username, :password)",
             {"username": username, "password": password})
     db.commit()
-    return render_template("index.html", signup_message="Sign up sucessed. Please sign in now.")
+    return render_template("index.html", signupokmessage="Sign up sucessed. Please sign in now.")
 
 @app.route("/", methods=["POST"])
 def login():
@@ -60,7 +75,7 @@ def login():
     else:
         # Check if the username and password are correct.
         if db.execute("SELECT * FROM users WHERE username = :username and password = :password", {"username": username, "password": password}).rowcount == 0:
-            return render_template("index.html", login_message="Wrong username or password. Please try again.")
+            return render_template("index.html", status_message="Invalid username or password. Please try again.")
 
         else:
             print('username=',username)
@@ -71,18 +86,14 @@ def login():
 @app.route("/", methods=["POST"])
 def do_logout():
     """Log out."""
-    print(session)
     username = session['username'][0]
-    # user_id = session['user_id'][0]
-    print('username=',username)
     session['username'].remove(username)
-    # session['user_id'].remove(user_id)
-    print(session)
-    # print(session['user_id'])
 
     return render_template("index.html")
 
-
+@app.route("/searchpage", methods=["GET", "POST"])
+def searchpage():
+    return render_template("search.html")
 
 @app.route("/search", methods=["GET", "POST"])
 def search():
@@ -239,8 +250,5 @@ def book_api(isbn):
             "review_count": review_ct,
             "average_score": avg_score
         })
-
-
-
 if __name__ == '__main__':
     app.run(debug = True)

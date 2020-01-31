@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-
+    <br>
     <h2>{{ book.title }}</h2>
     <ul>
         <li>by {{ book.author }}</li>
@@ -26,9 +26,6 @@
 
     {% if reviews %}
     <h4>Reviews</h4>
-
-    <!-- <p>{{ message }}</p> -->
-
     <table>
       <tr>
         {% for row_review in the_row_reviews %}
@@ -48,7 +45,7 @@
         <h5>---- Nobody reviews yet. ----</h5>
 
     {% endif %}
-    <p> </p>
+    <br>
     <h5>Leave your Comment:</h5>
     <form action="{{ url_for('submit_comment', isbn=book.isbn) }}" method="post">
       <fieldset class="form-group">
@@ -81,25 +78,26 @@
           <label for="CustomComment" class="col-sm-2 col-form-label">Comment</label>
           <div class="col-sm-10"><textarea class="form-control" type="text" name="comment" placeholder="Leave your comment here."></textarea></div></div>
 
-        <div class="form-group row">
-          <div class="col-sm-10">
-            <button class="btn btn-primary">Submit</button> {{ submit_message }}
+        <div class="form-group row justify-content-end">
+          <div class="col-sm-4">
+            <button class="btn btn-success btn-block">Submit</button> <span style="color:red;text-align:right;">{{ submit_message }}</span>
         </div></div>
 
     </form>
 
-    <div class="form-group row">
-    <form action="{{ url_for('search') }}" method="get">
+    <div class="row">
+        <div class="col-sm-4">
+          <a onclick="history.back()"><button class="btn btn-primary btn-block">Back</button></a> <br>
+        </div>
 
-        <div class="col-sm-10">
-          <button class="btn btn-primary">Search another book</button>
-      </div>
-    </form>
+        <div class="col-sm-4">
+          <a href="/searchpage"><button class="btn btn-primary btn-block">Another Search</button></a><br>
+        </div>
 
-    <form action="{{ url_for('do_logout') }}" method="post">
-      <!-- <div class="form-group row"> -->
-        <div class="col-sm-10">
-          <button class="btn btn-primary">Sign Out</button>
-      </div></div>
-    <!-- </form> -->
+        <div class="col-sm-4">
+            <form action="{{ url_for('do_logout') }}" method="post">
+              <button class="btn btn-primary btn-block">Sign Out</button></form>
+        </div>
+    </div>
+
 {% endblock %}

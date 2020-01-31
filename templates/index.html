@@ -5,46 +5,48 @@
 {% endblock %}
 
 {% block body %}
-
+    <br>
     <div class="container-fluid"><h2>Find a book, Elevate your values</h2></div>
-    <p>  </p>
-    {{ status_message }}
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12 col-xl-8" style="background-color:powderblue;">
-          <h5>--- For suggested books ---</h5>
+    <br>
+    {% if status_message  %}
+    <div class="alert alert-danger" role="alert">
+      {{ status_message }}
+    </div>
+    {% elif signupokmessage %}
+        <div class="alert alert-warning" role="alert">
+          {{ signupokmessage }}
         </div>
+    {% endif %}
 
-        <div class="col-12 col-xl-4">
-          <h5>--- Sign in for more function ---</h5>
+
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" id="signin-tab" data-toggle="tab" href="#signin" role="tab" aria-controls="signin" aria-selected="true">Sign In</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link"  href="signuppage" >or Sign Up Here</a>
+      </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane fade show active" id="signin" role="tabpanel" aria-labelledby="signin-tab">
+          <br>
+          <h4>--- Sign in for more function ---</h4>
+          <br>
           <form action="{{ url_for('login') }}" method="post">
               <div class="form-group">
                 <label for="validationCustomUsername">Username:</label>
                   <input class="form-control" name="username" placeholder="Username">
+                <br>
                 <label for="validationCustomPassword">Password:</label>
                   <input class="form-control" type="password" name="password" placeholder="Password">
               </div>
               <div class="form-group">
-                  <button class="btn btn-primary">Sign In</button> {{ login_message }}
+                  <button class="btn btn-primary">Sign In</button>
               </div>
           </form>
-
-          <p>  </p>
-          <p>  </p>
-
-          <h5>--- Or sign up here ---</h5>
-          <form action="{{ url_for('signup') }}" method="post">
-              <div class="form-group">
-                <label for="validationCustomUsername">Username:</label>
-                  <input class="form-control" name="username" placeholder="Username">
-                <label for="validationCustomPassword">Password:</label>
-                  <input class="form-control" type="password" name="password" placeholder="Password">
-              </div>
-              <div class="form-group">
-                  <button class="btn btn-primary">Sign Up</button> {{ signup_message }}
-              </div>
-          </form>
-        </div>
       </div>
+
     </div>
+
+
 {% endblock %}
